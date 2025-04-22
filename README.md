@@ -14,7 +14,6 @@ source code for the original Kiwix application, as well as our modifications to 
 - Ian Chorne
 - RJ Straiton
 - Matt Crowley
-- Billups Tillman
 
 ## Project Description
 The idea behind this project was to take an open-source project, find an inefficient user interaction, and fix it as we saw fit. After some research, we decided to work on 
@@ -32,6 +31,7 @@ This project was developed using a virtual Linux Ubuntu environment.
 ## Documentation
 - [Initial Research](./Documents/InitialResearch.pdf)
 - [User Research](./Documents/UserResearch.pdf)
+- [Sprint 1](./Documents/Sprint1.pdf)
 
 License
 -------
