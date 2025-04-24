@@ -76,6 +76,16 @@ public slots:
 private:
     void setCloseTabButton(int index);
     void createUndoButton();
+    struct ClosedTabInfo {
+        QString url;
+        QString title;
+        QString zimId;
+        QIcon icon;
+        QTimer* expiryTimer;
+    };
+    QList<ClosedTabInfo> m_closedTabs;
+    void storeClosedTab(int index);
+    void restoreLastClosedTab();
 private:
     QStackedWidget*     mp_stackedWidget;
     QScopedPointer<FullScreenWindow> m_fullScreenWindow;

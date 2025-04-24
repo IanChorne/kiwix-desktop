@@ -330,6 +330,9 @@ void TabBar::closeTab(int index)
     if (index <= 0 || index >= this->realTabCount())
         return;
 
+    // Store tab information before closing it
+    storeClosedTab(index);
+
     if ( index == currentIndex() ) {
         setCurrentIndex(index + 1 == realTabCount() ? index - 1 : index + 1);
     }
@@ -578,13 +581,97 @@ void TabBar::createUndoButton()
     m_undoButton->move(50, 5);
     m_undoButton->setVisible(true);
 
-    // Position it in a very obvious place
-    m_undoButton->move(10, 5);
+    // Position it in a very obvious place for testing purposes
+    m_undoButton->move(500, 5);
 
     // Connect button click to undo action
-    connect(m_undoButton, &QToolButton::clicked, this, [=]() {
-        qDebug() << "Undo button clicked!";
-    });
+    connect(m_undoButton, &QToolButton::clicked, this, &TabBar::restoreLastClosedTab);
 }
+
+// Store information about a tab that's about to be closed
+void TabBar::storeClosedTab(int index)
+{
+    ZimView* zimView = qobject_cast<ZimView*>(mp_stackedWidget->widget(index));
+    if (!zimView)
+        return; // Only store ZimView tabs
+
+    WebView* webView = zimView->getWebView();
+    if (!webView)
+        return;
+
+    ClosedTabInfo info;
+    info.url = webView->url().toString();
+    info.title = webView->title();
+    info.zimId = webView->zimId();
+    info.icon = tabIcon(index);
+
+    // Create a timer to delete this tab after 60 seconds
+    info.expiryTimer = new QTimer(this);
+    info.expiryTimer->setSingleShot(true);
+    info.expiryTimer->setInterval(60000); // 60 seconds
+
+    // Create a copy of the tab info for the lambda
+    ClosedTabInfo* tabInfoPtr = new ClosedTabInfo(info);
+    connect(info.expiryTimer, &QTimer::timeout, this, [this, tabInfoPtr]() {
+        // Find and remove this tab from the list
+        for (int i = 0; i < m_closedTabs.size(); i++) {
+            if (m_closedTabs[i].url == tabInfoPtr->url &&
+                m_closedTabs[i].title == tabInfoPtr->title &&
+                m_closedTabs[i].zimId == tabInfoPtr->zimId) {
+                m_closedTabs[i].expiryTimer->deleteLater();
+                m_closedTabs.removeAt(i);
+                break;
+            }
+        }
+
+        // Hide the undo button if there are no more closed tabs
+        if (m_closedTabs.isEmpty()) {
+            m_undoButton->setVisible(false);
+        }
+
+        // Delete the temporary copy
+        delete tabInfoPtr;
+    });
+    info.expiryTimer->start();
+
+    // Add to our closed tabs stack
+    m_closedTabs.append(info);
+
+    // Show the undo button when a tab is closed
+    m_undoButton->setVisible(true);
+}
+
+// Restore the most recently closed tab
+void TabBar::restoreLastClosedTab()
+{
+    if (m_closedTabs.isEmpty())
+        return;
+
+    // Get the most recently closed tab (last in the list)
+    ClosedTabInfo info = m_closedTabs.takeLast();
+
+    // Stop and delete the expiry timer
+    info.expiryTimer->stop();
+    info.expiryTimer->deleteLater();
+
+    // Create a new tab
+    ZimView* newTab = createNewTab(true, true);
+    if (!newTab)
+        return;
+
+    // Restore the tab's content
+    WebView* webView = newTab->getWebView();
+    if (webView) {
+        webView->setUrl(QUrl(info.url));
+        setTitleOf(info.title, newTab);
+        setIconOf(info.icon, newTab);
+    }
+
+    // Hide the undo button if there are no more closed tabs
+    if (m_closedTabs.isEmpty()) {
+        m_undoButton->setVisible(false);
+    }
+}
+
 
 
