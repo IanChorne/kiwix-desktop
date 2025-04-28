@@ -14,6 +14,7 @@ source code for the original Kiwix application, as well as our modifications to 
 - Ian Chorne
 - RJ Straiton
 - Matt Crowley
+- Billups Tillman
 
 ## Project Description
 The idea behind this project was to take an open-source project, find an inefficient user interaction, and fix it as we saw fit. After some research, we decided to work on 
