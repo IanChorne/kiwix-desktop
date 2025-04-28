@@ -577,15 +577,23 @@ void TabBar::createUndoButton()
     m_undoButton->setToolTip(gt("undo-close-tab"));
 
     // Button styling
-    m_undoButton->setStyleSheet("background-color: yellow; min-width: 30px; min-height: 30px;");
-    m_undoButton->move(50, 5);
-    m_undoButton->setVisible(true);
+    //m_undoButton->setStyleSheet("background-color: yellow; min-width: 30px; min-height: 30px;");
+    m_undoButton->setStyleSheet("min-width: 30px; min-height: 30px;");
+    //m_undoButton->move(50, 5);
+
+    //Set it to not be visible at the beginning
+    m_undoButton->setVisible(false);
 
     // Position it in a very obvious place for testing purposes
     m_undoButton->move(500, 5);
 
     // Connect button click to undo action
     connect(m_undoButton, &QToolButton::clicked, this, &TabBar::restoreLastClosedTab);
+
+    // Connect to tabBar size change to reposition the button
+    connect(this, &TabBar::sizeChanged, this, [this]() {
+        positionUndoButton();
+    });
 }
 
 // Store information about a tab that's about to be closed
@@ -639,6 +647,8 @@ void TabBar::storeClosedTab(int index)
 
     // Show the undo button when a tab is closed
     m_undoButton->setVisible(true);
+    // Position the button accordingly, depending on the number of tabs
+    positionUndoButton();
 }
 
 // Restore the most recently closed tab
@@ -673,5 +683,29 @@ void TabBar::restoreLastClosedTab()
     }
 }
 
+//This method is to help position the undo button so it isn't just a yellow square in the middle of the UI
+void TabBar::positionUndoButton()
+{
+    // Calculate position based on the current tabs
+    // This positions the button after the last tab but before the "+" button
+    int xPos = 0;
+    if (count() > 0) {
+        // Get the rectangle of the last tab (the "+" button)
+        QRect plusTabRect = tabRect(count() - 1);
+        // Position the undo button before the "+" button
+        xPos = plusTabRect.left() - m_undoButton->width() - 5;
+    }
+
+    // Make sure xPos is never negative
+    xPos = qMax(0, xPos);
+
+    // Position the button vertically centered in the tab bar
+    int yPos = (height() - m_undoButton->height()) / 2;
+
+    m_undoButton->move(xPos, yPos);
+
+    // Ensure the button stays on top by raising it
+    m_undoButton->raise();
+}
 
 
