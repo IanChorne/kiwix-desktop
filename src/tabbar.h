@@ -86,6 +86,7 @@ private:
     QList<ClosedTabInfo> m_closedTabs;
     void storeClosedTab(int index);
     void restoreLastClosedTab();
+    void positionUndoButton();
 private:
     QStackedWidget*     mp_stackedWidget;
     QScopedPointer<FullScreenWindow> m_fullScreenWindow;
