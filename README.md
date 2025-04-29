@@ -35,8 +35,8 @@ that an Ubuntu Linux environment has already been set-up. If you do not have an 
 - [Environment Set-Up](./Documents/EnvironmentSetUp.pdf)
 
 ## Video Demonstration
-Click here to watch our video demonstration of our "Undo Closed Tab" button in Kiwix! <br><br>
-[Click here to watch our video!](https://youtu.be/9T7qs7HoDig)
+- [Click here to watch our video](https://youtu.be/9T7qs7HoDig) of our "Undo Closed Tab" button in Kiwix! <br><br>
+
 
 License
 -------
