@@ -33,7 +33,7 @@ that an Ubuntu Linux environment has already been set-up. If you do not have an 
 - [User Research](./Documents/UserResearch.pdf)
 - [Sprint 1](./Documents/Sprint1.pdf)
 - [Environment Set-Up](./Documents/EnvironmentSetUp.pdf)
-- [User Testing Survery](./Documents/Updated-Kiwix-User-Testing-Survey.pdf)
+- [User Testing Survery](./Documents/UpdatedKiwixUserTestingSurvery.pdf)
 
 ## Video Demonstration
 - [Click here to watch our video](https://youtu.be/9T7qs7HoDig) of our "Undo Closed Tab" button in Kiwix! <br><br>
