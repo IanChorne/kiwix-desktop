@@ -28,9 +28,6 @@ This project was developed using a virtual Linux Ubuntu environment. If you woul
 It took us quite a bit of time to get Kiwix properly set up on our environments, so we prepared a step-by-step guide to help us get everything running correctly. The document assumes
 that an Ubuntu Linux environment has already been set-up. If you do not have an Ubuntu environment, I recommend following [this guide](https://youtu.be/t_-hLP1eI4k?si=UYdrz05c6M_aJFrk).
 
-## Executing the Application
-- Add a step-by-step guide on how to run our version of Kiwix
-
 ## Documentation
 - [Initial Research](./Documents/InitialResearch.pdf)
 - [User Research](./Documents/UserResearch.pdf)
