@@ -6,7 +6,6 @@ source code for the original Kiwix application, as well as our modifications to 
 - [Team Members](#team-members)
 - [Project Description](#project-description)
 - [Environment](#environment)
-- [Execution](#executing-the-application)
 - [Documentation](#documentation)
 - [Video Demonstration](#video-demonstration)
 - [License](#license)
